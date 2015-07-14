@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Hoàng Ân Paint</title>
+	<script src = "../js/jquery.min.js"></script>
+	<script src = 'js/Anscript.js'></script>
+	
+	<style>
+		body {
+			text-align: center;
+		}
+		
+		#canvas {
+			border: 1px solid gray;
+		}
+		
+		#copy {
+			color: #00f;
+		}
+	</style>
+</head>
+
+<body>
+	<div>
+		<input type="text" id="width">
+		<input type="text" id="height">
+		<button onclick="New();">Tạo mới</button>
+		<button id="clear">Xóa</button>
+		<br>
+		
+		<input name = "tool" type="radio" id="pen" checked = "checked">Bút chì
+		<input name = "tool" type="radio" id="line">Đường thẳng
+		<input name = "tool" type="radio" id="rect">Chữ nhật
+		<input name = "tool" type="radio" id="circle">Hình tròn
+		<input name = "tool" type="radio" id="eraser">Gôm
+	</div>
+	
+	<br>
+	<canvas id="canvas" width="500px" height="500px">Trình duyệt không hỗ trợ Canvas</canvas>
+	<p id = 'copy'><strong>Copyright &copy; 2012 Hoàng Ân</strong></p>
+</body>
+</html>
