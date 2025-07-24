@@ -1,43 +1,34 @@
 <!DOCTYPE HTML>
-<html>
-<head>
-	<meta charset="UTF-8" />
-	<title>Hoàng Ân Paint</title>
-	<script src = "js/jquery.min.js"></script>
-	<script src = 'js/script.js'></script>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Vũ Đắc Hoàng Ân">
+    <title>Chương trình vẽ</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="css/paint.css">
+  </head>
 
-	<style>
-		body {
-			text-align: center;
-		}
+  <body class="t-center">
+    <div>
+      <input type="text" id="width">
+      <input type="text" id="height">
+      <button onclick="New();">Tạo mới</button>
+      <button id="clear">Xóa</button>
+      <br>
 
-		#canvas {
-			border: 1px solid gray;
-		}
+      <input name="tool" type="radio" id="pen" checked="checked">Bút chì
+      <input name="tool" type="radio" id="line">Đường thẳng
+      <input name="tool" type="radio" id="rect">Chữ nhật
+      <input name="tool" type="radio" id="circle">Hình tròn
+      <input name="tool" type="radio" id="eraser">Gôm
+    </div>
 
-		#copy {
-			color: #00f;
-		}
-	</style>
-</head>
+    <br>
+    <canvas id="canvas" width="500px" height="500px" class="border"></canvas>
+    <p id="copy" class="orange"><strong>Copyright &copy; 2012<script>new Date().getFullYear() > 2012 && document.write("-" + new Date().getFullYear());</script>, Hoàng Ân</strong></p>
 
-<body>
-	<div>
-		<input type="text" id="width">
-		<input type="text" id="height">
-		<button onclick="New();">Tạo mới</button>
-		<button id="clear">Xóa</button>
-		<br>
-
-		<input name = "tool" type="radio" id="pen" checked = "checked">Bút chì
-		<input name = "tool" type="radio" id="line">Đường thẳng
-		<input name = "tool" type="radio" id="rect">Chữ nhật
-		<input name = "tool" type="radio" id="circle">Hình tròn
-		<input name = "tool" type="radio" id="eraser">Gôm
-	</div>
-
-	<br>
-	<canvas id="canvas" width="500px" height="500px">Trình duyệt không hỗ trợ Canvas</canvas>
-	<p id = 'copy'><strong>Copyright &copy; 2012<script>new Date().getFullYear() > 2012 && document.write("-" + new Date().getFullYear());</script>, Hoàng Ân</strong></p>
-</body>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
 </html>
