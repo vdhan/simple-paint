@@ -10,7 +10,7 @@
 
 	$.fn.makeDrawable = function() {
 		canvas = this[0];
-		context = canvas.getContext("2d");
+		context = canvas.getContext('2d', {willReadFrequently: true});
 
 		$(canvas).mousedown(function(e) {
 			preX = e.pageX - canvas.offsetLeft;
@@ -251,21 +251,16 @@
 	}
 })( jQuery );
 
-function _id(id)
-{
-	return document.getElementById(id);
-}
+function taoMoi() {
+	let dai = document.getElementById('dai').value;
+	let rong = document.getElementById('rong').value;
 
-function New()
-{
-	var w = $("#width").val();
-	var h = $("#height").val();
+	let canvas = document.querySelector('canvas');
+	canvas.width = +dai >= 1 ? dai : 600;
+	canvas.height = +rong >= 1 ? rong : 400;
 
-	canvas.width = $.isNumeric(w) ? w : 600;
-	canvas.height = $.isNumeric(h) ? h : 400;
-
-	$("#canvas").makeDrawable();
-	$("#canvas").setTool("pen");
+	// $("#canvas").makeDrawable();
+	// $("#canvas").setTool("pen");
 }
 
 $(function(){
@@ -300,4 +295,16 @@ $(function(){
 		if(this.value)
 			$("#canvas").setTool("eraser");
 	});
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+	let tao = document.getElementById('tao');
+	tao.addEventListener('click', taoMoi);
+
+	let nam = new Date().getFullYear();
+	let p = document.createElement('p');
+	p.textContent = `Bản quyền © 2012 - ${nam} Vũ Đắc Hoàng Ân`;
+
+	let footer = document.querySelector('footer');
+	footer.appendChild(p);
 });

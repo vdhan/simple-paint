@@ -10,28 +10,30 @@
   </head>
 
   <body class="t-center">
-    <div class="my-xs">
-      <input id="width" type="text" class="ip">
-      <input id="height" type="text" class="ip">
-      <button class="bt bt-default" onclick="New();">Tạo mới</button>
-      <button id="clear" class="bt bt-red">Xóa</button>
-    </div>
+    <header class="pt-xs">
+      <div>
+        <input id="dai" type="number" min="1" class="ip" placeholder="dài">
+        <input id="rong" type="number" min="1" class="ip" placeholder="rộng">
+        <button id="tao" class="bt bt-default">Tạo mới</button>
+        <button id="clear" class="bt bt-red">Xóa</button>
+      </div>
 
-    <div>
-      <input id="pen" type="radio" name="tool" checked="checked">Bút chì
-      <input id="line" type="radio" name="tool">Đường thẳng
-      <input id="rect" type="radio" name="tool">Chữ nhật
-      <input id="circle" type="radio" name="tool">Hình tròn
-      <input id="eraser" type="radio" name="tool">Gôm
-    </div>
+      <div class="my-xs">
+        <input id="pen" type="radio" name="tool" checked="checked">Bút chì
+        <input id="line" type="radio" name="tool">Đường thẳng
+        <input id="rect" type="radio" name="tool">Chữ nhật
+        <input id="circle" type="radio" name="tool">Hình tròn
+        <input id="eraser" type="radio" name="tool">Gôm
+      </div>
+    </header>
 
-    <main class="my-xs">
-      <canvas id="canvas" width="500px" height="500px" class="border"></canvas>
+    <main>
+      <canvas id="canvas" width="600px" height="400px" class="border"></canvas>
     </main>
 
-    <footer id="copy" class="orange bold">Copyright &copy; 2012<script>new Date().getFullYear() > 2012 && document.write("-" + new Date().getFullYear());</script>, Hoàng Ân</footer>
+    <footer class="orange bold"></footer>
 
     <script src="js/jquery.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/paint.js"></script>
   </body>
 </html>
