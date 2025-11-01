@@ -244,11 +244,6 @@
 		tool = newTool;
 		return $(canvas);
 	}
-
-	$.fn.clear = function() {
-		canvas.width = canvas.width;
-		return $(canvas);
-	}
 })( jQuery );
 
 function taoMoi() {
@@ -263,13 +258,14 @@ function taoMoi() {
 	// $("#canvas").setTool("pen");
 }
 
+function xoaHet() {
+	let canvas = document.querySelector('canvas');
+	canvas.width = canvas.width;
+}
+
 $(function(){
 	$("#canvas").makeDrawable();
 	$("#canvas").setTool("pen");
-
-	$("#clear").click(function(){
-		$("#canvas").clear();
-	});
 
 	$("#pen").change(function(){
 		if(this.value)
@@ -300,6 +296,9 @@ $(function(){
 document.addEventListener('DOMContentLoaded', () => {
 	let tao = document.getElementById('tao');
 	tao.addEventListener('click', taoMoi);
+
+	let xoa = document.getElementById('xoa');
+	xoa.addEventListener('click', xoaHet);
 
 	let nam = new Date().getFullYear();
 	let p = document.createElement('p');
