@@ -1,304 +1,218 @@
-(function($) {
-  var preX;
-  var preY;
-  var tool;
-  var canvas;
-  var context;
-  var imageData;
-  var paint;
-  var t = 0;
+class Ve {
+  congCu = 'but';
+  dangVe = false;
+  t = false;
+  co = 20;
 
-  $.fn.makeDrawable = function() {
-    canvas = this[0];
-    context = canvas.getContext('2d', {willReadFrequently: true});
+  constructor() {
+    this.canvas = document.querySelector('canvas');
+    this.context = this.canvas.getContext('2d', {willReadFrequently: true});
 
-    $(canvas).mousedown(function(e) {
-      preX = e.pageX - canvas.offsetLeft;
-      preY = e.pageY - canvas.offsetTop;
-      paint = true;
+    this.canvas.addEventListener('mousedown', (e) => {
+      this.preX = e.pageX - this.canvas.offsetLeft;
+      this.preY = e.pageY - this.canvas.offsetTop;
+      this.dangVe = true;
 
-      if(tool == "eraser")
-      {
-        var size = 20;
-        context.clearRect(preX - 10, preY - 10, size, size);
-
-        imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      if (this.congCu == 'gom') {
+        this.context.clearRect(this.preX - 10, this.preY - 10, this.co, this.co);
+        this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
       }
 
-      if(tool == "line" || tool == "rect" || tool == "circle")
-      {
-        imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+      if (this.congCu == 'duong' || this.congCu == 'chuNhat' || this.congCu == 'tron') {
+        this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
       }
     });
 
-    $(canvas).mousemove(function(e) {
-      var x = e.pageX - canvas.offsetLeft;
-      var y = e.pageY - canvas.offsetTop;
+    this.canvas.addEventListener('mousemove', (e) => {
+      let x = e.pageX - this.canvas.offsetLeft;
+      let y = e.pageY - this.canvas.offsetTop;
+      if (this.dangVe) {
+        if (this.congCu == 'but') {
+          this.context.moveTo(this.preX, this.preY);
+          this.context.lineTo(x, y);
+          this.context.stroke();
+          this.preX = x;
+          this.preY = y;
+        } else if (this.congCu == 'duong') {
+          this.canvas.width = this.canvas.width;
+          this.context.putImageData(this.duLieu, 0, 0);
 
-      if(paint)
-      {
-        if(tool == "pen")
-        {
-          context.moveTo(preX,preY);
-          context.lineTo(x,y);
-          context.stroke();
+          this.context.moveTo(this.preX, this.preY);
+          this.context.lineTo(x, y);
+          this.context.stroke();
+        } else if (this.congCu == 'chuNhat') {
+          this.canvas.width = this.canvas.width;
+          this.context.putImageData(this.duLieu, 0, 0);
 
-          preX = x;
-          preY = y;
-        }
-        else if(tool == "line")
-        {
-          canvas.width = canvas.width;
-          context.putImageData(imageData,0,0);
-
-          context.moveTo(preX,preY);
-          context.lineTo(x,y);
-          context.stroke();
-        }
-        else if(tool == "rect")
-        {
-          canvas.width = canvas.width;
-          context.putImageData(imageData,0,0);
-
-          var left, top;
-          var width = Math.abs(x - preX);
-          var height = Math.abs(y - preY);
-
-          if(preX < x)
-          {
-            left = preX;
-          }
-          else if(x < preX)
-          {
-            left = x;
+          let trai, tren;
+          let ngang = Math.abs(this.preX - x);
+          let cao = Math.abs(this.preY - y);
+          if (this.preX < x) {
+            trai = this.preX;
+          } else {
+            trai = x;
           }
 
-          if(preY < y)
-          {
-            top = preY;
-          }
-          else if(y < preY)
-          {
-            top = y;
+          if (this.preY < y) {
+            tren = this.preY;
+          } else {
+            tren = y;
           }
 
-          context.strokeRect(left, top, width, height);
-        }
-        else if(tool == "circle")
-        {
-          canvas.width = canvas.width;
-          context.putImageData(imageData, 0, 0);
+          this.context.strokeRect(trai, tren, ngang, cao);
+        } else if (this.congCu == 'tron') {
+          this.canvas.width = this.canvas.width;
+          this.context.putImageData(this.duLieu, 0, 0);
 
-          var r;
-          var cx = (preX + x) / 2;
-          var cy = (preY + y) / 2;
-          var dx = Math.abs(preX - x) / 2;
-          var dy = Math.abs(preY - y) / 2;
+          let r, cx, cy;
+          let dx = Math.abs(this.preX - x) / 2;
+          let dy = Math.abs(this.preY - y) / 2;
 
-          if(dx < dy)
-          {
+          if (dx < dy) {
             r = dx;
-            cx = (preX + x) / 2;
-
-            if(preY < y)
-              cy = preY + r;
-            else
-              cy = preY - r;
-          }
-          else
-          {
+            cx = (this.preX + x) / 2;
+            if (this.preY < y) {
+              cy = this.preY + r;
+            } else {
+              cy = this.preY - r;
+            }
+          } else {
             r = dy;
-            cy = (preY + y) / 2;
-
-            if(preX < x)
-              cx = preX + r;
-            else
-              cx = preX - r;
+            cy = (this.preY + y) / 2;
+            if (this.preX < x) {
+              cx = this.preX + r;
+            } else {
+              cx = this.preX - r;
+            }
           }
 
-          context.beginPath();
-          context.arc(cx, cy, r, 0, 2 * Math.PI);
-          context.stroke();
+          this.context.beginPath();
+          this.context.arc(cx, cy, r, 0, 2 * Math.PI);
+          this.context.stroke();
+        } else if (this.congCu == 'gom') {
+          this.context.clearRect(x - 10, y - 10, this.co, this.co);
+          this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
         }
-        else if(tool == "eraser")
-        {
-          var size = 20;
-          context.clearRect(x - 10, y - 10, size, size);
-
-          imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        }
-      }
-      else
-      {
-        if(tool == "eraser")
-        {
-          canvas.width = canvas.width;
-          context.putImageData(imageData,0,0);
-
-          if(x > 0 && y > 0 && x < canvas.width && y < canvas.height)
-          {
-            var size = 20;
-            context.strokeRect(x - 9, y - 9, size - 2, size - 2);
+      } else {
+        if (this.congCu == 'gom') {
+          this.canvas.width = this.canvas.width;
+          this.context.putImageData(this.duLieu, 0, 0);
+          if (x > 0 && y > 0 && x < this.canvas.width && y < this.canvas.height) {
+            this.context.strokeRect(x - 9, y - 9, this.co - 2, this.co - 2);
           }
         }
       }
     });
 
-    $(canvas).mouseup(function(e) {
-      var x = e.pageX - canvas.offsetLeft;
-      var y = e.pageY - canvas.offsetTop;
+    this.canvas.addEventListener('mouseup', (e) => {
+      let x = e.pageX - this.canvas.offsetLeft;
+      let y = e.pageY - this.canvas.offsetTop;
+      if (this.congCu == 'duong') {
+        this.context.moveTo(this.preX, this.preY);
+        this.context.lineTo(x, y);
+        this.context.stroke();
+      } else if (this.congCu == 'chuNhat') {
+        let trai, tren;
+        let ngang = Math.abs(x - this.preX);
+        let cao = Math.abs(y - this.preY);
 
-      if(tool == "line")
-      {
-        context.moveTo(preX, preY);
-        context.lineTo(x, y);
-        context.stroke();
-      }
-      else if(tool == "rect")
-      {
-        var left, top;
-        var width = Math.abs(x - preX);
-        var height = Math.abs(y - preY);
-
-        if(preX < x)
-        {
-          left = preX;
-        }
-        else if(x < preX)
-        {
-          left = x;
+        if (this.preX < x) {
+          trai = this.preX;
+        } else {
+          trai = x;
         }
 
-        if(preY < y)
-        {
-          top = preY;
-        }
-        else if(y < preY)
-        {
-          top = y;
+        if (this.preY < y) {
+          tren = this.preY;
+        } else {
+          tren = y;
         }
 
-        context.strokeRect(left,top,width,height);
-      }
-      else if(tool == "circle")
-      {
-        var r;
-        var cx = (preX + x) / 2;
-        var cy = (preY + y) / 2;
-        var dx = Math.abs(preX - x) / 2;
-        var dy = Math.abs(preY - y) / 2;
-
-        if(dx < dy)
-        {
+        this.context.strokeRect(trai, tren, ngang, cao);
+      } else if (this.congCu == 'tron') {
+        let r, cx, cy;
+        let dx = Math.abs(this.preX - x) / 2;
+        let dy = Math.abs(this.preY - y) / 2;
+        if (dx < dy) {
           r = dx;
-          cx = (preX + x) / 2;
-
-          if(preY < y)
-            cy = preY + r;
-          else
-            cy = preY - r;
-        }
-        else
-        {
+          cx = (this.preX + x) / 2;
+          if (this.preY < y) {
+            cy = this.preY + r;
+          } else {
+            cy = this.preY - r;
+          }
+        } else {
           r = dy;
-          cy = (preY + y) / 2;
+          cy = (this.preY + y) / 2;
+          if (this.preX < x) {
+            cx = this.preX + r;
+          } else {
+            cx = this.preX - r;
+          }
 
-          if(preX < x)
-            cx = preX + r;
-          else
-            cx = preX - r;
-        }
-
-        context.beginPath();
-        context.arc(cx, cy, r, 0, 2*Math.PI);
-        context.stroke();
-      }
-
-      paint = false;
-    });
-
-    $(canvas).mouseenter(function(e) {
-      if(tool == "eraser")
-      {
-        if(t == 0)
-        {
-          imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-          t = 1;
+          this.context.beginPath();
+          this.context.arc(cx, cy, r, 0, 2 * Math.PI);
+          this.context.stroke();
         }
       }
-      else
-        t = 0;
+
+      this.dangVe = false;
     });
 
-    $(canvas).mouseleave(function(e) {
-      window.onmouseup = function()
-        {
-          paint = false;
+    this.canvas.addEventListener('mouseenter', () => {
+      if (this.congCu == 'gom') {
+        if (this.t == false) {
+          this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+          this.t = true;
         }
+      } else {
+        this.t = false;
+      }
     });
 
-    return $(canvas);
-  };
-
-  $.fn.setTool = function(newTool) {
-    tool = newTool;
-    return $(canvas);
+    this.canvas.addEventListener('mouseleave', () => {
+      window.onmouseup = () => {
+        this.dangVe = false;
+      }
+    });
   }
-})( jQuery );
 
-function taoMoi() {
-  let dai = document.getElementById('dai').value;
-  let rong = document.getElementById('rong').value;
+  datCongCu(congCuMoi) {
+    this.congCu = congCuMoi;
+  }
 
-  let canvas = document.querySelector('canvas');
-  canvas.width = +dai >= 1 ? dai : 600;
-  canvas.height = +rong >= 1 ? rong : 400;
+  taoMoi() {
+    let dai = document.getElementById('dai').value;
+    let rong = document.getElementById('rong').value;
+    this.canvas.width = +dai >= 1 ? dai : 600;
+    this.canvas.height = +rong >= 1 ? rong : 400;
+    this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+  }
 
-  // $("#canvas").makeDrawable();
-  // $("#canvas").setTool("pen");
+  xoaHet() {
+    this.canvas.width = this.canvas.width;
+    this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+  }
 }
-
-function xoaHet() {
-  let canvas = document.querySelector('canvas');
-  canvas.width = canvas.width;
-}
-
-$(function(){
-  $("#canvas").makeDrawable();
-  $("#canvas").setTool("pen");
-
-  $("#pen").change(function(){
-    if(this.value)
-      $("#canvas").setTool("pen");
-  });
-
-  $("#line").change(function(){
-    if(this.value)
-      $("#canvas").setTool("line");
-  });
-
-  $("#rect").change(function(){
-    if(this.value)
-      $("#canvas").setTool("rect");
-  });
-
-  $("#circle").change(function(){
-    if(this.value)
-      $("#canvas").setTool("circle");
-  });
-
-  $("#eraser").change(function(){
-    if(this.value)
-      $("#canvas").setTool("eraser");
-  });
-});
 
 document.addEventListener('DOMContentLoaded', () => {
+  let ve = new Ve();
+  let radios = document.querySelectorAll('[name="cong-cu"]');
+  for (let radio of radios) {
+    radio.addEventListener('change', function () {
+      ve.datCongCu(this.value);
+    });
+  }
+
   let tao = document.getElementById('tao');
-  tao.addEventListener('click', taoMoi);
+  tao.addEventListener('click', () => {
+    ve.taoMoi();
+  });
 
   let xoa = document.getElementById('xoa');
-  xoa.addEventListener('click', xoaHet);
+  xoa.addEventListener('click', () => {
+    ve.xoaHet();
+  });
 
   let nam = new Date().getFullYear();
   let p = document.createElement('p');
