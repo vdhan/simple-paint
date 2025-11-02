@@ -15,11 +15,11 @@ class Ve {
 
       if (this.congCu == 'gom') {
         this.context.clearRect(this.preX - 10, this.preY - 10, this.co, this.co);
-        this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        this.capNhat();
       }
 
       if (this.congCu == 'duong' || this.congCu == 'chuNhat' || this.congCu == 'tron') {
-        this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+        this.capNhat();
       }
     });
 
@@ -91,7 +91,7 @@ class Ve {
           this.context.stroke();
         } else if (this.congCu == 'gom') {
           this.context.clearRect(x - 10, y - 10, this.co, this.co);
-          this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+          this.capNhat();
         }
       } else {
         if (this.congCu == 'gom') {
@@ -162,7 +162,7 @@ class Ve {
     this.canvas.addEventListener('mouseenter', () => {
       if (this.congCu == 'gom') {
         if (this.t == false) {
-          this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+          this.capNhat();
           this.t = true;
         }
       } else {
@@ -186,11 +186,15 @@ class Ve {
     let rong = document.getElementById('rong').value;
     this.canvas.width = +dai >= 1 ? dai : 600;
     this.canvas.height = +rong >= 1 ? rong : 400;
-    this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
+    this.capNhat();
   }
 
   xoaHet() {
     this.canvas.width = this.canvas.width;
+    this.capNhat();
+  }
+
+  capNhat() {
     this.duLieu = this.context.getImageData(0, 0, this.canvas.width, this.canvas.height);
   }
 }
